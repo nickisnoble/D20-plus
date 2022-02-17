@@ -1,0 +1,16 @@
+{
+  "name": "D20",
+  "version": "1.0.0",
+  "description": "An N sided die for FigJam",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "author": "Nick Noble",
+  "license": "MIT",
+  "devDependencies": {
+    "@figma/plugin-typings": "*",
+    "@figma/widget-typings": "*",
+    "typescript": "*"
+  }
+}
