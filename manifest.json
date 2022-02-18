@@ -1,11 +1,11 @@
 {
   "name": "D20+",
   "id": "1054259486650713013",
-  "api": "1.2.0",
+  "api": "1.0.0",
   "main": "code.js",
   "editorType": [
     "figjam"
   ],
   "containsWidget": true,
-  "widgetApi": "1.2.0"
+  "widgetApi": "1.0.0"
 }

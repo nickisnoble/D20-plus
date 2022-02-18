@@ -36,22 +36,20 @@ function DiceIcon ({ sides, size, color, ...props }) {
 
 function Widget() {
 
-  const [sides, setSides] = useSyncedState('sides', diceCollection[0] );
-  const [roll, setRoll] = useSyncedState('roll', 0);
+  const [sides, setSides] = useSyncedState( 'sides', diceCollection[0] );
+  const [roll, setRoll] = useSyncedState( 'roll', 0 );
 
-  const reroll = () => {
-    setRoll( () => d( sides ) )
-    console.log(`Rolled a D${sides}`)
+  const reroll = ( n = sides ) => {
+    setRoll( d(n) )
+    console.log(`Rolled a D${n}`)
   };
 
   const cycleDice = () => {
     const nextIndex = diceCollection.indexOf(sides) + 1;
+    const nextDie = diceCollection[nextIndex % diceCollection.length];
 
-    setSides( diceCollection[
-      nextIndex < diceCollection.length ?
-        nextIndex
-      : 0
-    ])
+    setSides( nextDie )
+    reroll( nextDie );
   }
 
   usePropertyMenu(
@@ -94,6 +92,7 @@ function Widget() {
 
         case "sides-selector":
           setSides( parseInt(propertyValue) )
+          reroll( parseInt(propertyValue) )
           break;
 
         default:
