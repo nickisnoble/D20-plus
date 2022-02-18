@@ -9,57 +9,57 @@ const themes = [
   {
     tooltip: "White",
     option: "#ffffff",
-    background: '#ffffff',
-    border: '#E6E6E6',
-    text: '#000',
+    light: '#ffffff',
+    medium: '#E6E6E6',
+    dark: '#C4C4C4',
   },
   {
     tooltip: "Red",
-    background: '#FFBDAE',
-    border: '#FF9790',
-    text: '#F24E1E',
+    light: '#FFBDAE',
+    medium: '#FF9790',
+    dark: '#F24E1E',
     option: '#F24E1E',
   },
   {
     tooltip: "Yellow",
-    background: '#FFEA79',
-    border: '#FFD233',
-    text: '#FFC700',
+    light: '#FFEA79',
+    medium: '#FFD233',
+    dark: '#FFC700',
     option: '#FFC700',
   },
   {
     tooltip: "Green",
-    background: '#93E396',
-    border: '#4ECB71',
-    text: '#0FA958',
+    light: '#93E396',
+    medium: '#4ECB71',
+    dark: '#0FA958',
     option: '#0FA958',
   },
   {
     tooltip: "Blue",
-    background: '#B1D0FF',
-    border: '#85B6FF',
-    text: '#699BF7',
+    light: '#B1D0FF',
+    medium: '#85B6FF',
+    dark: '#699BF7',
     option: '#699BF7',
   },
   {
     tooltip: "Violet",
-    background: '#EABFFF',
-    border: '#D99BFF',
-    text: '#9747FF',
+    light: '#EABFFF',
+    medium: '#D99BFF',
+    dark: '#9747FF',
     option: '#9747FF',
   },
   {
     tooltip: "Brown",
-    background: '#EAC287',
-    border: '#E4A951',
-    text: '#D27C2C',
+    light: '#EAC287',
+    medium: '#E4A951',
+    dark: '#D27C2C',
     option: '#D27C2C',
   },
   {
     tooltip: "Charcoal",
-    background: '#CED3DA',
-    border: '#C4C4C4',
-    text: '#545454',
+    light: '#CED3DA',
+    medium: '#C4C4C4',
+    dark: '#545454',
     option: '#545454',
   }
 ]
@@ -176,14 +176,14 @@ function Widget() {
       spacing={12}
       padding={16}
       cornerRadius={16}
-      fill={color.background}
-      stroke={color.border}
-      strokeWidth={2}
+      fill={color.light}
+      stroke={color.medium}
+      strokeWidth={4}
     >
-      <DiceIcon sides={sides} color={color.border} size={64}
+      <DiceIcon sides={sides} color={color.dark} size={64}
         onClick={() => cycleDice()}
       />
-      <Text fill={color.text} fontSize={64} horizontalAlignText={'center'}
+      <Text fontSize={64} horizontalAlignText={'center'}
         onClick={() => reroll()}
       >
         {roll}
