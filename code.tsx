@@ -5,6 +5,65 @@ const { useSyncedState, usePropertyMenu, AutoLayout, Text, SVG } = widget;
 
 const diceCollection = [20, 12, 10, 8, 6, 4, 2, 100]
 
+const themes = [
+  {
+    tooltip: "White",
+    option: "#ffffff",
+    background: '#ffffff',
+    border: '#E6E6E6',
+    text: '#000',
+  },
+  {
+    tooltip: "Red",
+    background: '#FFBDAE',
+    border: '#FF9790',
+    text: '#F24E1E',
+    option: '#F24E1E',
+  },
+  {
+    tooltip: "Yellow",
+    background: '#FFEA79',
+    border: '#FFD233',
+    text: '#FFC700',
+    option: '#FFC700',
+  },
+  {
+    tooltip: "Green",
+    background: '#93E396',
+    border: '#4ECB71',
+    text: '#0FA958',
+    option: '#0FA958',
+  },
+  {
+    tooltip: "Blue",
+    background: '#B1D0FF',
+    border: '#85B6FF',
+    text: '#699BF7',
+    option: '#699BF7',
+  },
+  {
+    tooltip: "Violet",
+    background: '#EABFFF',
+    border: '#D99BFF',
+    text: '#9747FF',
+    option: '#9747FF',
+  },
+  {
+    tooltip: "Brown",
+    background: '#EAC287',
+    border: '#E4A951',
+    text: '#D27C2C',
+    option: '#D27C2C',
+  },
+  {
+    tooltip: "Charcoal",
+    background: '#CED3DA',
+    border: '#C4C4C4',
+    text: '#545454',
+    option: '#545454',
+  }
+]
+
 function d(sides:number) {
   return Math.floor( Math.random() * sides ) + 1;
 }
@@ -37,7 +96,8 @@ function DiceIcon ({ sides, size, color, ...props }) {
 function Widget() {
 
   const [sides, setSides] = useSyncedState( 'sides', diceCollection[0] );
-  const [roll, setRoll] = useSyncedState( 'roll', 0 );
+  const [roll, setRoll]   = useSyncedState( 'roll', 0 );
+  const [color, setColor] = useSyncedState( 'color', themes[0] );
 
   const reroll = ( n = sides ) => {
     setRoll( d(n) )
@@ -46,22 +106,29 @@ function Widget() {
 
   const cycleDice = () => {
     const nextIndex = diceCollection.indexOf(sides) + 1;
-    const nextDie = diceCollection[nextIndex % diceCollection.length];
+    const nextDie = diceCollection[ nextIndex % diceCollection.length ];
 
     setSides( nextDie )
-    reroll( nextDie );
+    reroll( nextDie )
   }
+
+  console.log( color )
 
   usePropertyMenu(
     [
-      // {
-      //   itemType: 'color-selector',
-      //   propertyName: 'color-selector',
-      //   tooltip: 'Color selector',
-      //   selectedOption: color,
-      //   options: [{option: "#e06666", tooltip: "Red"}, {option: "#ffe599", tooltip: "Yellow"} ],
-      // },
-      // { itemType: 'separator' },
+      {
+        itemType: 'color-selector',
+        propertyName: 'color-selector',
+        tooltip: 'Color',
+        selectedOption: color.option,
+        options: themes.map( ({option, tooltip}) => ({
+          option,
+          tooltip
+        }))
+      },
+
+      { itemType: 'separator' },
+
       {
         itemType: 'dropdown',
         propertyName: 'sides-selector',
@@ -82,9 +149,9 @@ function Widget() {
 
     ({propertyName, propertyValue}) => {
       switch (propertyName) {
-        // case "color-selector":
-        //   setColor(propertyValue)
-        //   break;
+        case "color-selector":
+          setColor( themes[themes.findIndex( (t) => t.option === propertyValue )] )
+          break;
 
         case "reroll":
           reroll()
@@ -109,14 +176,14 @@ function Widget() {
       spacing={12}
       padding={16}
       cornerRadius={16}
-      fill={'#fff'}
-      stroke={'#E6E6E6'}
+      fill={color.background}
+      stroke={color.border}
       strokeWidth={2}
     >
-      <DiceIcon sides={sides} color={'#ccc'} size={64}
+      <DiceIcon sides={sides} color={color.border} size={64}
         onClick={() => cycleDice()}
       />
-      <Text fontSize={64} horizontalAlignText={'center'}
+      <Text fill={color.text} fontSize={64} horizontalAlignText={'center'}
         onClick={() => reroll()}
       >
         {roll}
