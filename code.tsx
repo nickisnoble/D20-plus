@@ -3,6 +3,8 @@
 const { widget } = figma;
 const { useSyncedState, usePropertyMenu, AutoLayout, Text, SVG } = widget;
 
+const diceCollection = [20, 12, 10, 8, 6, 4, 2, 100]
+
 function d(sides:number) {
   return Math.floor( Math.random() * sides ) + 1;
 }
@@ -33,12 +35,14 @@ function DiceIcon ({ sides, size, color, ...props }) {
 }
 
 function Widget() {
-  const diceCollection = [20, 12, 10, 8, 6, 4, 2, 100]
 
-  const [roll, setRoll] = useSyncedState('roll', 0);
   const [sides, setSides] = useSyncedState('sides', diceCollection[0] );
+  const [roll, setRoll] = useSyncedState('roll', 0);
 
-  const reroll = () => setRoll( d( sides ) )
+  const reroll = () => {
+    setRoll( () => d( sides ) )
+    console.log(`Rolled a D${sides}`)
+  };
 
   const cycleDice = () => {
     const nextIndex = diceCollection.indexOf(sides) + 1;
@@ -48,23 +52,56 @@ function Widget() {
         nextIndex
       : 0
     ])
-
-    reroll()
   }
 
   usePropertyMenu(
     [
+      // {
+      //   itemType: 'color-selector',
+      //   propertyName: 'color-selector',
+      //   tooltip: 'Color selector',
+      //   selectedOption: color,
+      //   options: [{option: "#e06666", tooltip: "Red"}, {option: "#ffe599", tooltip: "Yellow"} ],
+      // },
+      // { itemType: 'separator' },
+      {
+        itemType: 'dropdown',
+        propertyName: 'sides-selector',
+        tooltip: 'Sides',
+        selectedOption: sides + "",
+        options: diceCollection
+          .sort( (a,b) => b - a )
+          .map( n => {
+            return { option: `${n}`, label: `D${n}` }
+          }),
+      },
       {
         itemType: 'action',
         propertyName: 'reroll',
         tooltip: 'Reroll',
       },
     ],
-    () => {
-      reroll()
-    },
-  )
 
+    ({propertyName, propertyValue}) => {
+      switch (propertyName) {
+        // case "color-selector":
+        //   setColor(propertyValue)
+        //   break;
+
+        case "reroll":
+          reroll()
+          break;
+
+        case "sides-selector":
+          setSides( parseInt(propertyValue) )
+          break;
+
+        default:
+          console.log(propertyName)
+          break;
+      }
+    }
+  )
 
   return (
     <AutoLayout
